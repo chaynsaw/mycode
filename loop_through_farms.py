@@ -4,15 +4,19 @@ farms = [{"name": "NE Farm", "agriculture": ["sheep", "cows", "pigs", "chickens"
          {"name": "W Farm", "agriculture": ["pigs", "chickens", "llamas"]},
          {"name": "SE Farm", "agriculture": ["chickens", "carrots", "celery"]}]
 
-def return_agriculture_from_farm(animals_only=False):
+
+
+def return_agriculture_from_farm(farms=farms, animals_only=False):
+    allowed_farms = [item['name'].lower() for item in farms]
+
     if animals_only is False:
         restricted_list = []
     else:
         restricted_list = ['carrots', 'celery']
 
-    function2input = input(f"Choose NE Farm, W Farm, or SE Farm. animals_only is set to {animals_only}. ").lower()
+    function2input = input(f"Choose from {allowed_farms} animals_only is set to {animals_only}. ").lower()
     while True:
-        if function2input in ["ne farm", "w farm", "se farm"]:
+        if function2input in allowed_farms:
             for farm in farms:
                 if farm['name'].lower() == function2input:
                     for element in farm['agriculture']:
@@ -20,13 +24,11 @@ def return_agriculture_from_farm(animals_only=False):
                             print(element, end=" ")
                     return
         else:
-            function2input = input("Please try again. Choose NE Farm, W Farm, or SE Farm: ").lower()
+            function2input = input(f"Please try again. Choose from {allowed_farms}. ").lower()
 
 
 if __name__ == "__main__":
-    for farm in farms:
-        for element in farm['agriculture']:
-            print(element, end=" ")
+    return_agriculture_from_farm(farms=[item for item in farms if item['name'] == "NE Farm"])
     print('\n')
     return_agriculture_from_farm(animals_only=False)
     print('\n')
