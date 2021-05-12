@@ -31,3 +31,5 @@ if __name__ == "__main__":
     return_agriculture_from_farm(animals_only=False)
     print('\n')
     return_agriculture_from_farm(animals_only=True)
+    print('\n')
+
