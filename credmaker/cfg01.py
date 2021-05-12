@@ -19,7 +19,7 @@ print(configlist)
 
 ## Iterate through configlist
 for x in configlist:
-    print(x)
+    print(x.strip())
 
 ## Always close your file
 configfile.close()

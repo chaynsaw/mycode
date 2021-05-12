@@ -14,6 +14,13 @@ def return_agriculture_from_farm(farms=farms, animals_only=False):
     else:
         restricted_list = ['carrots', 'celery']
 
+    if len(farms) == 1:
+        print(f"Only one farm specified, returning all farms from {farms[0]['name']}")
+        for element in farms[0]['agriculture']:
+            if element not in restricted_list:
+                print(element, end=" ")
+        return
+
     function2input = input(f"Choose from {allowed_farms} animals_only is set to {animals_only}. ").lower()
     while True:
         if function2input in allowed_farms:
