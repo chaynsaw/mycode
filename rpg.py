@@ -1,3 +1,5 @@
+import os
+
 class Game:
     def __init__(self, name: str):
         self.player = Player(name)
@@ -17,19 +19,14 @@ class Game:
             proposed_position[0] -= 1
         elif action == "4":
             proposed_position[0] += 1
-        try:
-            self.map.layout[proposed_position[0]][proposed_position[1]].player_is_here = True
-            self.map.layout[self.map.current_pos[0]][self.map.current_pos[1]].player_is_here = False
-            self.map.current_pos = proposed_position
-        except:
-            print("Your move is invalid, please try again.")
+        else:
+            input("Invalid option. Press any key to continue.")
 
+        self.map.move_player(proposed_position)
         self.proceed()
-        # try:
-        #     self.map.current_pos
-        # pass
 
     def proceed(self):
+        os.system('printf "\033c"')
         self.map.display_map()
         self.move_player()
 
@@ -60,6 +57,17 @@ class Map:
         self.current_pos = [self.height - 1, 0]
         self.layout[self.current_pos[0]][self.current_pos[1]].player_is_here = True
         self.layout[0][-1].end_room = True
+
+    def move_player(self, proposed_position):
+        try:
+            if 0 > proposed_position[0] or proposed_position[0] >= self.height or 0 > proposed_position[1] or proposed_position[1] >= self.length:
+                raise ValueError("Move out of bounds")
+
+            self.layout[proposed_position[0]][proposed_position[1]].player_is_here = True
+            self.layout[self.current_pos[0]][self.current_pos[1]].player_is_here = False
+            self.current_pos = proposed_position
+        except:
+            input("Your move is invalid, please try again. Press any key.")
 
     def create_map(self):
         for x in range(self.height):
