@@ -1,6 +1,11 @@
 class Game:
     def __init__(self, name: str):
         self.player = Player(name)
+        self.map = Map()
+
+    def show_move_options(self):
+        pass
+
 
 class Player:
     def __init__(self, name: str):
@@ -44,10 +49,7 @@ def main():
     # player_name = input_name if input_name is not "" else "Chadwick Feeserton"
     player_name = "Chadwick Feeserton"
     game = Game(player_name)
-    map = Map()
-    # print(map.layout)
-    # map.display_map()
-    map.display_map()
+    game.map.display_map()
 
 
 main()
