@@ -49,7 +49,7 @@ class Room:
         self.player_is_here = False
         self.end_room = False
 
-    def show(self):
+    def show_on_map(self):
         result = "[   ]"
         if self.end_room is True:
             result = "[end]"
@@ -88,7 +88,7 @@ class Map:
     def display_map(self):
         for x in range(self.height):
             for y in range(self.length):
-                print(self.layout[x][y].show(), end=" ")
+                print(self.layout[x][y].show_on_map(), end=" ")
             print("")
 
 def main():
