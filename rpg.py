@@ -58,6 +58,9 @@ class Map:
         self.layout[self.current_pos[0]][self.current_pos[1]].player_is_here = True
         self.layout[0][-1].end_room = True
 
+    def access_current_room(self):
+        return self.layout[self.current_pos[0]][self.current_pos[1]]
+
     def move_player(self, proposed_position):
         try:
             if 0 > proposed_position[0] or proposed_position[0] >= self.height or 0 > proposed_position[1] or proposed_position[1] >= self.length:
