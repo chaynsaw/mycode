@@ -1,5 +1,12 @@
 import os
+import random
 
+ROOM_DESCRIPTIONS = [
+    'A cold, dark room. It is dimly lit by a lone candlelight.',
+    'A bright, dark room. There is no light source that you can think of.',
+    'A bright, warm room. It feels cozy. You could fall asleep here.',
+    'A dark, warm room. No idea what is generating warmth, certainly not the torch illuminating just enough the staircase up, and the doorways leading out.'
+]
 class Game:
     def __init__(self, name: str):
         self.player = Player(name)
@@ -37,6 +44,7 @@ class Game:
     def proceed(self):
         os.system('printf "\033c"')
         self.map.display_map()
+        print(self.map.access_current_room().description)
         self.move_player()
 
 class Player:
@@ -45,7 +53,7 @@ class Player:
 
 class Room:
     def __init__(self):
-        self.description = f"This is a room."
+        self.description = random.choice(ROOM_DESCRIPTIONS)
         self.player_is_here = False
         self.end_room = False
 
