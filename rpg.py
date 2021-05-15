@@ -20,10 +20,19 @@ class Game:
         elif action == "4":
             proposed_position[0] += 1
         else:
-            input("Invalid option. Press any key to continue.")
+            input("Invalid option. Press enter to continue.")
 
         self.map.move_player(proposed_position)
         self.proceed()
+
+    def begin(self):
+        os.system('printf "\033c"')
+        print("You awake with no memory of who you are in a cold, dark room.\n")
+        print("In front of you, you can see a doorway. In the middle of the room, a staircase to the upper floor.\n")
+        print("A clear, even voice echoes somewhere, not so distant, not so close.\n")
+        print(f"'Hello {self.player.name}.'")
+        print("'Do not trouble yourself with questions of who you are, and why you are here. You are here, in this Tower, and there is no way out but through. Climb the tower. Reach the end. I will explain everything then.\n")
+        input("Press enter to continue.")
 
     def proceed(self):
         os.system('printf "\033c"')
@@ -70,7 +79,7 @@ class Map:
             self.layout[self.current_pos[0]][self.current_pos[1]].player_is_here = False
             self.current_pos = proposed_position
         except:
-            input("Your move is invalid, please try again. Press any key.")
+            input("Your move is invalid, please try again. Press enter to continue.")
 
     def create_map(self):
         for x in range(self.height):
@@ -87,6 +96,7 @@ def main():
     # player_name = input_name if input_name is not "" else "Chadwick Feeserton"
     player_name = "Chadwick Feeserton"
     game = Game(player_name)
+    game.begin()
     game.proceed()
     game.move_player()
 
