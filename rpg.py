@@ -77,6 +77,7 @@ class Monster(Challenge):
         super().__init__()
         self.health = random.choice([30, 40, 50, 60])
         self.damage = random.choice(self.ranges)
+        self.description = "A big monster is in front of you."
 
     def fight(self, damage_range):
         if self.health <= 0:
