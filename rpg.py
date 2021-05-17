@@ -41,15 +41,16 @@ class Game:
         print("A clear, even voice echoes somewhere, not so distant, not so close.\n")
         print(f"'Hello {self.player.name}.'")
         print(
-            "'Do not trouble yourself with questions of who you are, and why you are here. You are here, "
-            "in this Tower, and there is no way out but through. Climb the tower. Reach the end. I will explain "
-            "everything then.\n")
+            "'Do not worry about why you are here. Climb the tower and reach the end. Everything will be explained.'\n")
         input("Press enter to continue.")
 
     def proceed(self):
         os.system('printf "\033c"')
         self.map.display_map()
-        print(self.map.access_current_room().description)
+        current_room = self.map.access_current_room()
+        print(current_room.description)
+        if not current_room.challenge.cleared:
+            print(current_room.challenge.description)
         self.move_player()
 
 
@@ -76,7 +77,6 @@ class Monster(Challenge):
         super().__init__()
         self.health = random.choice([30, 40, 50, 60])
         self.damage = random.choice(self.ranges)
-        print(self.damage)
 
     def fight(self, damage_range):
         if self.health <= 0:
@@ -86,10 +86,9 @@ class Monster(Challenge):
             damage_dealt_to_player = random.randint(*self.damage)
             self.health -= damage_dealt_to_monster
             print(f"Monster takes {damage_dealt_to_monster} dmg and deals {damage_dealt_to_player} dmg!")
+            print(f"Monster has {self.health} HP left.")
             if self.health <= 0:
                 print("Monster has died from its wounds.")
-            else:
-                print(f"Monster has {self.health} HP left.")
 
 
 class Room:
@@ -97,6 +96,7 @@ class Room:
         self.description = random.choice(ROOM_DESCRIPTIONS)
         self.player_is_here = False
         self.end_room = False
+        self.challenge = Monster()
 
     def show_on_map(self):
         result = "[   ]"
@@ -150,7 +150,6 @@ def main():
     game = Game(player_name)
     game.begin()
     game.proceed()
-    game.move_player()
 
 
 main()
