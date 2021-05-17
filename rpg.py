@@ -8,7 +8,12 @@ ROOM_DESCRIPTIONS = [
     'A dark, warm room. No idea what is generating warmth, certainly not the torch illuminating just enough the staircase up, and the doorways leading out.'
 ]
 
-
+"""
+Main game class is Game().
+Game contains a Player, and a Map.
+Map contains Rooms, which have Challenges.
+Invocation of game comes from main(), defined at the bottom.
+"""
 class Game:
     def __init__(self, name: str):
         self.player = Player(name)
@@ -45,14 +50,32 @@ class Game:
             "'Do not worry about why you are here. Climb the tower and reach the end. Everything will be explained.'\n")
         input("Press enter to continue.")
 
+    def end(self):
+        print("A hooded figure appears in front of you. You struggle to make out its face.\n")
+        print(
+            "Its voice is guttural and terrifying: 'You have completed all the challenges. Thank you for setting me "
+            "free.'\n")
+        print("Without a further word, it leaps and plunges its claws into you.\n")
+        print(
+            "As you lose consciousness and behold the horror of the beast's visage, you wonder momentarily what havoc "
+            "will be loosed upon the world.\n")
+        print("With your last breath, you gasp... 'This is such bulls-...'\n")
+        exit("The End.")
+
+    # Main game loop. self.proceed() will evaluate position on map, combat status, and end the game if conditions are
+    # met. Conditions to end are... current_room.end_room is True, current_room.challenge.cleared is True.
     def proceed(self):
         os.system('printf "\033c"')
         current_room = self.map.access_current_room()
+        if current_room.challenge.cleared and current_room.end_room:
+            self.end()
         print(current_room.description)
         if not current_room.challenge.cleared:
             self.map.display_map()
             print(current_room.challenge.description)
             current_room.challenge.engage(self.player.damage_range)
+            if current_room.challenge.cleared and current_room.end_room:
+                self.end()
         self.map.display_map()
         self.move_player()
 
@@ -115,6 +138,7 @@ class Monster(Challenge):
             for key in actions.keys():
                 print(f"{key}) {actions[key]['name']}: {actions[key]['description']}")
             input(f"Type 1 of {list(actions.keys())} and press Enter to continue")
+            # Currently, the only thing you can do is attack.
             if input in actions.keys():
                 continue
         self.cleared = True
