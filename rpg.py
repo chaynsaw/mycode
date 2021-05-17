@@ -30,6 +30,7 @@ class Game:
             proposed_position[0] += 1
         else:
             input("Invalid option. Press enter to continue.")
+            self.proceed()
 
         self.map.move_player(proposed_position)
         self.proceed()
@@ -46,17 +47,20 @@ class Game:
 
     def proceed(self):
         os.system('printf "\033c"')
-        self.map.display_map()
         current_room = self.map.access_current_room()
         print(current_room.description)
         if not current_room.challenge.cleared:
+            self.map.display_map()
             print(current_room.challenge.description)
+            current_room.challenge.engage(self.player.damage_range)
+        self.map.display_map()
         self.move_player()
 
 
 class Player:
     def __init__(self, name: str):
         self.name = name
+        self.damage_range = (5, 10)
 
 
 class Challenge:
@@ -70,6 +74,13 @@ class Challenge:
             print("You have cleared this challenge.")
 
 
+class EmptyChallenge(Challenge):
+    def __init__(self):
+        super().__init__()
+        self.cleared = True
+        self.description = "There is no challenge in this room."
+
+
 class Monster(Challenge):
     ranges = [(1, 5), (2, 5), (5, 9), (3, 10), (2, 4), (1, 2), (4, 9)]
 
@@ -79,10 +90,19 @@ class Monster(Challenge):
         self.damage = random.choice(self.ranges)
         self.description = "A big monster is in front of you."
 
-    def fight(self, damage_range):
-        if self.health <= 0:
-            print("The monster is dead.")
-        else:
+    def engage(self, damage_range):
+        actions = {
+            1: {
+                "name": "Attack",
+                "description": "You attack the monster."
+            },
+            2: {
+                "name": "Defend",
+                "description": "You guard against the monster's attack."
+            }
+        }
+
+        while self.health > 0:
             damage_dealt_to_monster = random.randint(*damage_range)
             damage_dealt_to_player = random.randint(*self.damage)
             self.health -= damage_dealt_to_monster
@@ -90,14 +110,23 @@ class Monster(Challenge):
             print(f"Monster has {self.health} HP left.")
             if self.health <= 0:
                 print("Monster has died from its wounds.")
+                self.cleared = True
+                continue
+            for key in actions.keys():
+                print(f"{key}) {actions[key]['name']}: {actions[key]['description']}")
+            input(f"Type 1 of {list(actions.keys())} and press Enter to continue")
+            if input in actions.keys():
+                continue
+        self.cleared = True
+        print("The monster is dead.")
 
 
 class Room:
-    def __init__(self):
+    def __init__(self, challenge: Challenge):
         self.description = random.choice(ROOM_DESCRIPTIONS)
         self.player_is_here = False
         self.end_room = False
-        self.challenge = Monster()
+        self.challenge = challenge
 
     def show_on_map(self):
         result = "[   ]"
@@ -126,7 +155,6 @@ class Map:
             if 0 > proposed_position[0] or proposed_position[0] >= self.height or 0 > proposed_position[1] or \
                     proposed_position[1] >= self.length:
                 raise ValueError("Move out of bounds")
-
             self.layout[proposed_position[0]][proposed_position[1]].player_is_here = True
             self.layout[self.current_pos[0]][self.current_pos[1]].player_is_here = False
             self.current_pos = proposed_position
@@ -135,7 +163,9 @@ class Map:
 
     def create_map(self):
         for x in range(self.height):
-            self.layout.append([Room() for y in range(self.length)])
+            self.layout.append([Room(Monster()) for y in range(self.length)])
+        self.layout[self.height - 1][0] = Room(EmptyChallenge())
+        self.layout[0][self.length - 1].end_room = True
 
     def display_map(self):
         for x in range(self.height):
