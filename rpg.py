@@ -145,9 +145,8 @@ class Map:
 
 
 def main():
-    # input_name = input("What is your name? Press Enter to select the default name.")
-    # player_name = input_name if input_name is not "" else "Chadwick Feeserton"
-    player_name = "Chadwick Feeserton"
+    input_name = input("What is your name? Press Enter to select the default name.")
+    player_name = input_name if input_name is not "" else "Chadwick Feeserton"
     game = Game(player_name)
     game.begin()
     game.proceed()
