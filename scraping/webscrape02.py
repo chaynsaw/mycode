@@ -42,14 +42,16 @@ def get_swords():
 
    if response is not None:
        html = BeautifulSoup(response, 'html.parser')
-       swords = {}
+       # swords = {}
+       swords = []
        for li in html.select('li'):
             # print(li.text, "\n\n")
             if ": " in li.text:
                 sword_array = re.split("\:(.*)", li.text)
                 if "Swords" not in sword_array[0]:
+                    swords.append(sword_array[0])
 
-                    swords[sword_array[0]] = sword_array[1]
+                    # swords[sword_array[0]] = sword_array[1]
 
                     # check if there's at least 1 character in name, otherwise it's an empty string
                     # check if any integers in string- most likely not a name
@@ -62,7 +64,8 @@ def get_swords():
 
 def main():
     result = get_swords()
-    print(result, indent=4)
+    for index, sword in enumerate(result):
+        print(index + 1, sword)
     print(len(result))
 
 if __name__ == "__main__":
