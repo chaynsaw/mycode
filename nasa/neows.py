@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from datetime import datetime
+from pprint import pprint
 
 import requests
 
@@ -48,7 +49,7 @@ def main():
         "end_date": enddate
     }
     print(payload)
-    neowrequest = requests.get(NEOURL, params = payload)
+    neowrequest = requests.get(NEOURL, params=payload)
 
     # strip off json attachment from our response
     neodata = neowrequest.json()
@@ -76,5 +77,7 @@ def main():
         print(f"The closest asteroid was {closest_asteroid_name}")
     except:
         print("Something went wrong. Please check your dates.")
+
+    pprint(neodata)
 if __name__ == "__main__":
     main()
