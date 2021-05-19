@@ -2,3 +2,5 @@
 venv/
 busted.py
 nasa.creds
+marvel.priv
+marvel.pub
