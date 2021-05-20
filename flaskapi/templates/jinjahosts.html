@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <ul id="navigation">
+    {% for item in hosts %}
+        <li>{{ item.ip }} {{ item.fqdn }} # {{ item.hostname }}</li>
+    {% endfor %}
+    </ul>
+    <form action = "/addhosts" method = "POST">
+        <p>Enter hostname: <input type = "text" name = "hostname"></p>
+        <p>Enter ip: <input type = "text" name = "ip"></p>
+        <p>Enter fqdn: <input type = "text" name = "fqdn"></p>
+        <p><input type = "submit" value = "submit"></p>
+    </form>
+    <br />
+    Logged in as {{ session["username"] }} <br />
+    <a href = '/logout'>click here to log out</a>
+</body>
+</html>
