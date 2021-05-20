@@ -1,0 +1,10 @@
+- name: chad's silly playbook WHEEE
+  hosts: planetexpress
+  connection: ssh
+
+  tasks: 
+    - name: get dat figlet installed BOI
+      apt: 
+        name: figlet
+        state: present
+      become: true
