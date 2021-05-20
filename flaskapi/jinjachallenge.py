@@ -13,7 +13,6 @@ groups = [{"hostname": "hostA","ip": "192.168.30.22", "fqdn": "hostA.localdomain
 def index():
   ## if the key "username" has a value in session
   if "username" in session:
-    username = session["username"]
     return render_template("jinjahosts.html", hosts=groups)
 
   ## if the key "username" does not have a value in session
