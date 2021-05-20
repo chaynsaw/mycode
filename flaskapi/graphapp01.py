@@ -11,7 +11,7 @@ def sshlogin(ip, un, passw):
     sshsession = paramiko.SSHClient()
     sshsession.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     sshsession.connect(hostname=ip, username=un, password=passw)
-    ssh_stdin, ssh_stdout, ssh_stderr = sshsession.exec_command("cat uptime")
+    ssh_stdin, ssh_stdout, ssh_stderr = sshsession.exec_command("uptime")
     sshresult = ssh_stdout.read().decode('utf-8').split()
     print(sshresult)
 
