@@ -11,13 +11,16 @@ def sshlogin(ip, un, passw):
     sshsession = paramiko.SSHClient()
     sshsession.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     sshsession.connect(hostname=ip, username=un, password=passw)
+    ssh_stdin, ssh_stdout, ssh_stderr = sshsession.exec_command("cat uptime")
+    sshresult = ssh_stdout.read().decode('utf-8').split()
+    print(sshresult)
+
     ssh_stdin, ssh_stdout, ssh_stderr = sshsession.exec_command("cat /proc/uptime")
     sshresult = ssh_stdout.read().decode('utf-8').split()[0]
     with open("sshresult", "w") as myfile:
         myfile.write(sshresult)
     days = (int(float(sshresult)) / 86400)  # convert uptime in sec to days
     sshsession.close()
-    print(days)
     return days
 
 app = Flask(__name__)
