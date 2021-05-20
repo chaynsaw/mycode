@@ -31,6 +31,7 @@ def graphin():
     for cred in creds:
         xtick.append(cred['ip'])
         resp = sshlogin(cred['ip'], cred['un'], cred['passw'])
+        print(resp)
         svruptime.append(resp)
     xtick = tuple(xtick) # create a tuple
     svruptime = tuple(svruptime)
